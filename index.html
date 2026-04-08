@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Elevator Survey</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Elevator Survey</h1>
+            <button id="menuBtn" class="menu-btn">☰</button>
+        </header>
+
+        <nav id="sideMenu" class="side-menu">
+            <button class="close-menu" id="closeMenu">×</button>
+            <ul>
+                <li><a href="#" data-section="project">Project Info</a></li>
+                <li><a href="#" data-section="machine-room">Machine Room</a></li>
+                <li><a href="#" data-section="car">Car Equipment</a></li>
+                <li><a href="#" data-section="hoistway">Hoistway</a></li>
+                <li><a href="#" data-section="pit">Pit Equipment</a></li>
+                <li><a href="#" data-section="elevations">Elevations</a></li>
+                <li><a href="#" data-section="export">Export Data</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Project Info -->
+            <section id="project" class="survey-section active">
+                <h2>Project Information</h2>
+                <div class="form-group">
+                    <label>State Number</label>
+                    <input type="text" id="stateNumber">
+                </div>
+                <div class="form-group">
+                    <label>Building Name</label>
+                    <input type="text" id="building">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Number of Cars</label>
+                    <input type="number" id="cars" value="1">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="elevatorType">
+                        <option>Hydraulic</option>
+                        <option>Traction</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stops</label>
+                    <input type="number" id="stops">
+                </div>
+                <div class="form-group">
+                    <label>Speed (FPM)</label>
+                    <input type="number" id="fpm">
+                </div>
+                <div class="form-group">
+                    <label>Capacity (lbs)</label>
+                    <input type="number" id="capacity">
+                </div>
+                <div class="form-group">
+                    <label>Piston Type</label>
+                    <input type="text" id="pistonType">
+                </div>
+            </section>
+
+            <!-- Machine Room -->
+            <section id="machine-room" class="survey-section">
+                <h2>Machine Room</h2>
+                <div class="form-group">
+                    <label>Motor Brand</label>
+                    <input type="text" id="motorBrand">
+                </div>
+                <div class="form-group">
+                    <label>Voltage</label>
+                    <input type="text" id="motorVoltage">
+                </div>
+                <div class="form-group">
+                    <label>HP</label>
+                    <input type="text" id="motorHP">
+                </div>
+                <div class="form-group">
+                    <label>Controller Type</label>
+                    <input type="text" id="controllerType">
+                </div>
+                <div class="form-group">
+                    <label>Tank Size</label>
+                    <input type="text" id="tankSize">
+                </div>
+            </section>
+
+            <!-- Car Equipment -->
+            <section id="car" class="survey-section">
+                <h2>Car Equipment</h2>
+                <div class="form-group">
+                    <label>Car Weight</label>
+                    <input type="text" id="carWeight">
+                </div>
+                <div class="form-group">
+                    <label>Door Operator</label>
+                    <input type="text" id="doorBrand">
+                </div>
+                <div class="form-group">
+                    <label>Opening Type</label>
+                    <select id="openingType">
+                        <option>Single Speed</option>
+                        <option>Center Opening</option>
+                        <option>Two Speed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cab Interiors</label>
+                    <textarea id="cabInteriors"></textarea>
+                </div>
+            </section>
+
+            <!-- Hoistway -->
+            <section id="hoistway" class="survey-section">
+                <h2>Hoistway</h2>
+                <div class="form-group">
+                    <label>Opening Width</label>
+                    <input type="text" id="openingWidth">
+                </div>
+                <div class="form-group">
+                    <label>Opening Height</label>
+                    <input type="text" id="openingHeight">
+                </div>
+                <div class="form-group">
+                    <label>Rail Size</label>
+                    <input type="text" id="railSize">
+                </div>
+                <div class="form-group">
+                    <label>Hall Buttons</label>
+                    <input type="number" id="hallButtons">
+                </div>
+            </section>
+
+            <!-- Pit -->
+            <section id="pit" class="survey-section">
+                <h2>Pit Equipment</h2>
+                <div class="form-group">
+                    <label>Buffer Car</label>
+                    <input type="text" id="bufferCar">
+                </div>
+                <div class="form-group">
+                    <label>Ladder</label>
+                    <select id="pitLadder">
+                        <option>Yes</option>
+                        <option>No</option>
+                        <option>Needs Repair</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stop Switch</label>
+                    <select id="stopSwitch">
+                        <option>Working</option>
+                        <option>Not Working</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Piston Size</label>
+                    <input type="text" id="pistonSize">
+                </div>
+            </section>
+
+            <!-- Elevations -->
+            <section id="elevations" class="survey-section">
+                <h2>Elevations</h2>
+                <button id="addFloor" class="btn-primary">Add Floor</button>
+                <div id="floorsContainer"></div>
+            </section>
+
+            <!-- Export -->
+            <section id="export" class="survey-section">
+                <h2>Export Data</h2>
+                <div class="export-options">
+                    <button id="saveLocal" class="btn-primary">Save Project</button>
+                    <button id="exportJSON" class="btn-secondary">Export JSON</button>
+                    <button id="exportHTML" class="btn-primary">Export Report</button>
+                </div>
+                <div id="savedSurveys" class="saved-surveys">
+                    <h3>Saved Projects</h3>
+                    <ul id="surveysList"></ul>
+                </div>
+            </section>
+        </main>
+
+        <div class="photo-capture">
+            <button id="photoBtn" class="photo-btn">📷</button>
+            <input type="file" id="photoInput" accept="image/*" capture="camera" style="display: none;">
+        </div>
+    </div>
+
+    <!-- INLINE SCRIPT - Add this right before closing body tag -->
+    <script>
+        // Simple navigation that will definitely work
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('App starting...');
+            
+            // Menu toggle
+            const menuBtn = document.getElementById('menuBtn');
+            const sideMenu = document.getElementById('sideMenu');
+            const closeMenu = document.getElementById('closeMenu');
+            
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function() {
+                    console.log('Menu button clicked');
+                    sideMenu.classList.add('active');
+                });
+            }
+            
+            if (closeMenu) {
+                closeMenu.addEventListener('click', function() {
+                    sideMenu.classList.remove('active');
+                });
+            }
+            
+            // Section navigation
+            const menuLinks = document.querySelectorAll('.side-menu a');
+            menuLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionName = this.getAttribute('data-section');
+                    console.log('Switching to section:', sectionName);
+                    
+                    // Hide all sections
+                    const allSections = document.querySelectorAll('.survey-section');
+                    allSections.forEach(function(section) {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show selected section
+                    const targetSection = document.getElementById(sectionName);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                        console.log('Section activated:', sectionName);
+                    } else {
+                        console.log('Section not found:', sectionName);
+                    }
+                    
+                    // Close menu
+                    sideMenu.classList.remove('active');
+                });
+            });
+            
+            // Save form data
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    const data = {};
+                    inputs.forEach(function(inp) {
+                        if (inp.id) {
+                            data[inp.id] = inp.value;
+                        }
+                    });
+                    localStorage.setItem('surveyData', JSON.stringify(data));
+                    console.log('Data saved');
+                });
+            });
+            
+            // Load saved data
+            const savedData = localStorage.getItem('surveyData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                Object.keys(data).forEach(function(key) {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = data[key];
+                    }
+                });
+                console.log('Data loaded');
+            }
+            
+            // Export functions
+            const exportJSON = document.getElementById('exportJSON');
+            if (exportJSON) {
+                exportJSON.addEventListener('click', function() {
+                    const data = localStorage.getItem('surveyData') || '{}';
+                    const blob = new Blob([data], {type: 'application/json'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'survey_' + Date.now() + '.json';
+                    a.click();
+                });
+            }
+            
+            // Photo button
+            const photoBtn = document.getElementById('photoBtn');
+            const photoInput = document.getElementById('photoInput');
+            if (photoBtn && photoInput) {
+                photoBtn.addEventListener('click', function() {
+                    photoInput.click();
+                });
+            }
+            
+            // Add floor functionality
+            const addFloorBtn = document.getElementById('addFloor');
+            const floorsContainer = document.getElementById('floorsContainer');
+            if (addFloorBtn && floorsContainer) {
+                let floorCount = 0;
+                addFloorBtn.addEventListener('click', function() {
+                    floorCount++;
+                    const floorDiv = document.createElement('div');
+                    floorDiv.className = 'floor-item';
+                    floorDiv.innerHTML = `
+                        <h4>Floor ${floorCount}</h4>
+                        <div class="form-group">
+                            <label>Floor Label</label>
+                            <input type="text" id="floor${floorCount}_label">
+                        </div>
+                        <div class="form-group">
+                            <label>Floor Height</label>
+                            <input type="text" id="floor${floorCount}_height">
+                        </div>
+                    `;
+                    floorsContainer.appendChild(floorDiv);
+                });
+            }
+            
+            console.log('App loaded successfully');
+        });
+    </script>
+</body>
+</html>
