@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevator Survey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .project-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .project-card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .menu {
+            background: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .menu.active {
+            display: block;
+        }
+        
+        .menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        .menu button:hover {
+            background: #f0f0f0;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .car-selector {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .car-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .car-tab {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .car-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .photo-section {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .photo-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .photo-list {
+            margin-top: 10px;
+        }
+        
+        .photo-item {
+            display: inline-block;
+            margin: 5px;
+            position: relative;
+        }
+        
+        .photo-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .delete-photo {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .subsection {
+            border-left: 3px solid #667eea;
+            padding-left: 15px;
+            margin: 20px 0;
+        }
+        
+        .subsection h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .notes-field {
+            background: #fffbf0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Elevator Modernization Survey</h1>
+        <button class="btn" onclick="toggleMenu()" id="menuBtn">☰ Menu</button>
+    </div>
+    
+    <div class="main">
+        <!-- Menu -->
+        <div class="menu" id="menu">
+            <button onclick="goToDashboard()">🏠 Dashboard</button>
+            <button onclick="goToProject()" id="projectLink" style="display:none">📋 Project Info</button>
+            <button onclick="goToMachine()" id="machineLink" style="display:none">⚙️ Machine Room</button>
+            <button onclick="goToCar()" id="carLink" style="display:none">🚪 Car Equipment</button>
+            <button onclick="goToHoistway()" id="hwLink" style="display:none">🏗️ Hoistway</button>
+            <button onclick="goToPit()" id="pitLink" style="display:none">🕳️ Pit Equipment</button>
+            <button onclick="goToElevations()" id="elevLink" style="display:none">📏 Elevations</button>
+            <button onclick="goToExport()" id="exportLink" style="display:none">💾 Export</button>
+        </div>
+        
+        <!-- Dashboard -->
+        <div id="dashboard" class="section active">
+            <h2>Projects Dashboard</h2>
+            <br>
+            <button class="btn" onclick="createProject()">+ Create New Project</button>
+            <br><br>
+            <div id="projectList"></div>
+        </div>
+        
+        <!-- Project Info -->
+        <div id="project" class="section">
+            <h2>Project Information</h2>
+            
+            <!-- Car Management -->
+            <div class="car-selector">
+                <div class="car-tabs" id="carTabs"></div>
+                <div>
+                    <button class="btn btn-success" onclick="addCar()">+ Add Car</button>
+                    <button class="btn btn-secondary" onclick="cloneCar()">📋 Clone Current Car</button>
+                    <button class="btn btn-danger" onclick="deleteCar()">Delete Current Car</button>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>State Number</label>
+                    <input type="text" id="stateNumber" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>Building</label>
+                    <input type="text" id="building" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Address</label>
+                <textarea id="address" rows="3" onchange="save()"></textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Number of Cars</label>
+                    <input type="number" id="cars" value="1" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="type" onchange="save()">
+                        <option>Hydraulic</option>
+                        <option>Traction</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Stops</label>
+                    <input type="number" id="stops" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>Front Openings</label>
+                    <input type="number" id="frontOpenings" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Rear Openings</label>
+                    <input type="number" id="rearOpenings" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>FPM</label>
+                    <input type="text" id="fpm" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="text" id="capacity" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>Piston Type</label>
+                    <input type="text" id="pistonType" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="photo-section">
+                <button class="photo-btn" onclick="addPhoto('project')">📷 Add Photo</button>
+                <input type="file" id="photo-project" accept="image/*" style="display:none;" onchange="handlePhoto('project', this)">
+                <div class="photo-list" id="photos-project"></div>
+            </div>
+            
+            <br>
+            <button class="btn" onclick="goToMachine()">Next: Machine Room →</button>
+        </div>
+        
+        <!-- Machine Room -->
+        <div id="machine" class="section">
+            <h2>Machine Room Equipment - Car <span id="carNumMR">1</span></h2>
+            
+            <div class="subsection">
+                <h3>Pump Motor Data</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Brand</label>
+                        <input type="text" id="motorBrand" onchange="save()">
+                    </div>
+                    <div class="form-group">
+                        <label>Voltage</label>
+                        <input type="text" id="motorVoltage" onchange="save()">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>HP</label>
+                        <input type="text" id="motorHP" onchange="save()">
+                    </div>
+                    <div class="form-group">
+                        <label>RPM</label>
+                        <input type="text" id="motorRPM" onchange="save()">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subsection">
+                <h3>Controller</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" id="controllerType" onchange="save()">
+                    </div>
+                    <div class="form-group">
+                        <label>Brand</label>
+                        <input type="text" id="controllerBrand" onchange="save()">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="photo-section">
+                <button class="photo-btn" onclick="addPhoto('machine')">📷 Add Photo</button>
+                <input type="file" id="photo-machine" accept="image/*" style="display:none;" onchange="handlePhoto('machine', this)">
+                <div class="photo-list" id="photos-machine"></div>
+            </div>
+            
+            <br>
+            <button class="btn btn-secondary" onclick="goToProject()">← Back</button>
+            <button class="btn" onclick="goToCar()">Next: Car Equipment →</button>
+        </div>
+        
+        <!-- Car Equipment -->
+        <div id="car" class="section">
+            <h2>Car Equipment - Car <span id="carNumCar">1</span></h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Car Weight</label>
+                    <input type="text" id="carWeight" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>Door Type</label>
+                    <input type="text" id="doorType" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="photo-section">
+                <button class="photo-btn" onclick="addPhoto('car')">📷 Add Photo</button>
+                <input type="file" id="photo-car" accept="image/*" style="display:none;" onchange="handlePhoto('car', this)">
+                <div class="photo-list" id="photos-car"></div>
+            </div>
+            
+            <br>
+            <button class="btn btn-secondary" onclick="goToMachine()">← Back</button>
+            <button class="btn" onclick="goToHoistway()">Next: Hoistway →</button>
+        </div>
+        
+        <!-- Hoistway -->
+        <div id="hoistway" class="section">
+            <h2>Hoistway Equipment - Car <span id="carNumHW">1</span></h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Opening Width</label>
+                    <input type="text" id="openingWidth" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>Opening Height</label>
+                    <input type="text" id="openingHeight" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="photo-section">
+                <button class="photo-btn" onclick="addPhoto('hoistway')">📷 Add Photo</button>
+                <input type="file" id="photo-hoistway" accept="image/*" style="display:none;" onchange="handlePhoto('hoistway', this)">
+                <div class="photo-list" id="photos-hoistway"></div>
+            </div>
+            
+            <br>
+            <button class="btn btn-secondary" onclick="goToCar()">← Back</button>
+            <button class="btn" onclick="goToPit()">Next: Pit →</button>
+        </div>
+        
+        <!-- Pit -->
+        <div id="pit" class="section">
+            <h2>Pit Equipment - Car <span id="carNumPit">1</span></h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Buffer Car</label>
+                    <input type="text" id="bufferCar" onchange="save()">
+                </div>
+                <div class="form-group">
+                    <label>Piston Size</label>
+                    <input type="text" id="pistonSize" onchange="save()">
+                </div>
+            </div>
+            
+            <div class="photo-section">
+                <button class="photo-btn" onclick="addPhoto('pit')">📷 Add Photo</button>
+                <input type="file" id="photo-pit" accept="image/*" style="display:none;" onchange="handlePhoto('pit', this)">
+                <div class="photo-list" id="photos-pit"></div>
+            </div>
+            
+            <br>
+            <button class="btn btn-secondary" onclick="goToHoistway()">← Back</button>
+            <button class="btn" onclick="goToElevations()">Next: Elevations →</button>
+        </div>
+        
+        <!-- Elevations -->
+        <div id="elevations" class="section">
+            <h2>Elevations - Car <span id="carNumElev">1</span></h2>
+            
+            <button class="btn" onclick="addFloor()">+ Add Floor</button>
+            <br><br>
+            
+            <div id="floorsContainer"></div>
+            
+            <br>
+            <button class="btn btn-secondary" onclick="goToPit()">← Back</button>
+            <button class="btn" onclick="goToExport()">Next: Export →</button>
+        </div>
+        
+        <!-- Export -->
+        <div id="export" class="section">
+            <h2>Export Data</h2>
+            <p>Current Project: <strong id="exportProjectName">None</strong></p>
+            <p>Total Cars: <strong id="exportCarCount">0</strong></p>
+            <br>
+            <button class="btn" onclick="testExport()">Test Export (Console)</button>
+            <button class="btn" onclick="exportJSON()">📄 Download JSON</button>
+            <button class="btn" onclick="exportHTML()">📑 Download HTML Report</button>
+            <button class="btn" onclick="exportCSV()">📊 Download CSV</button>
+            <br><br>
+            <button class="btn btn-secondary" onclick="goToDashboard()">Back to Dashboard</button>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        var currentProject = null;
+        var projects = {};
+        var currentCar = 1;
+        var carData = {};
+        var photos = {};
+        var floors = [];
+        
+        // Initialize
+        function init() {
+            try {
+                var saved = localStorage.getItem('projects');
+                if (saved) {
+                    projects = JSON.parse(saved);
+                }
+            } catch(e) {
+                console.error('Error loading projects:', e);
+                projects = {};
+            }
+            showProjectList();
+        }
+        
+        // Navigation functions
+        function toggleMenu() {
+            var menu = document.getElementById('menu');
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+            } else {
+                menu.classList.add('active');
+            }
+        }
+        
+        function hideAll() {
+            var sections = document.querySelectorAll('.section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById('menu').classList.remove('active');
+        }
+        
+        function goToDashboard() {
+            hideAll();
+            document.getElementById('dashboard').classList.add('active');
+            hideMenuItems();
+            save(); // Save before leaving
+            currentProject = null;
+            currentCar = 1;
+            showProjectList();
+        }
+        
+        function goToProject() { 
+            hideAll(); 
+            document.getElementById('project').classList.add('active');
+            if (currentProject) {
+                document.getElementById('exportProjectName').textContent = currentProject.name;
+                document.getElementById('exportCarCount').textContent = document.getElementById('cars').value || '1';
+            }
+        }
+        
+        function goToMachine() { hideAll(); document.getElementById('machine').classList.add('active'); }
+        function goToCar() { hideAll(); document.getElementById('car').classList.add('active'); }
+        function goToHoistway() { hideAll(); document.getElementById('hoistway').classList.add('active'); }
+        function goToPit() { hideAll(); document.getElementById('pit').classList.add('active'); }
+        function goToElevations() { hideAll(); document.getElementById('elevations').classList.add('active'); }
+        function goToExport() { 
+            hideAll(); 
+            document.getElementById('export').classList.add('active');
+            if (currentProject) {
+                document.getElementById('exportProjectName').textContent = currentProject.name;
+                document.getElementById('exportCarCount').textContent = document.getElementById('cars').value || '1';
+            }
+        }
+        
+        function showMenuItems() {
+            var items = ['projectLink', 'machineLink', 'carLink', 'hwLink', 'pitLink', 'elevLink', 'exportLink'];
+            for (var i = 0; i < items.length; i++) {
+                document.getElementById(items[i]).style.display = 'block';
+            }
+        }
+        
+        function hideMenuItems() {
+            var items = ['projectLink', 'machineLink', 'carLink', 'hwLink', 'pitLink', 'elevLink', 'exportLink'];
+            for (var i = 0; i < items.length; i++) {
+                document.getElementById(items[i]).style.display = 'none';
+            }
+        }
+        
+        // Project Management
+        function createProject() {
+            var name = prompt('Enter project name:');
+            if (!name) return;
+            
+            var id = 'p' + Date.now();
+            currentProject = {
+                id: id,
+                name: name,
+                created: new Date().toISOString(),
+                data: {},
+                carData: {},
+                photos: {}
+            };
+            
+            projects[id] = currentProject;
+            saveProjects();
+            
+            // Initialize
+            clearForm();
+            carData = {};
+            photos = {};
+            currentCar = 1;
+            document.getElementById('cars').value = 1;
+            
+            // Setup UI
+            showMenuItems();
+            updateCarTabs();
+            goToProject();
+            
+            alert('Project created: ' + name);
+        }
+        
+        function openProject(id) {
+            currentProject = projects[id];
+            if (!currentProject) return;
+            
+            // Initialize data structures if missing
+            if (!currentProject.carData) currentProject.carData = {};
+            if (!currentProject.photos) currentProject.photos = {};
+            
+            // Load data
+            clearForm();
+            if (currentProject.data) {
+                for (var key in currentProject.data) {
+                    var element = document.getElementById(key);
+                    if (element) {
+                        element.value = currentProject.data[key];
+                    }
+                }
+            }
+            
+            // Load car data and photos
+            carData = currentProject.carData || {};
+            photos = currentProject.photos || {};
+            
+            currentCar = 1;
+            showMenuItems();
+            updateCarTabs();
+            loadCarData();
+            goToProject();
+        }
+        
+        function deleteProject(id) {
+            if (!confirm('Delete this project?')) return;
+            delete projects[id];
+            saveProjects();
+            showProjectList();
+        }
+        
+        function showProjectList() {
+            var container = document.getElementById('projectList');
+            var ids = Object.keys(projects);
+            
+            if (ids.length === 0) {
+                container.innerHTML = '<div class="empty">No projects yet. Click "Create New Project" to start.</div>';
+                return;
+            }
+            
+            var html = '';
+            for (var i = 0; i < ids.length; i++) {
+                var p = projects[ids[i]];
+                var numCars = (p.data && p.data.cars) ? p.data.cars : '1';
+                html += '<div class="project-card">';
+                html += '<h3>' + p.name + '</h3>';
+                html += '<p>Cars: ' + numCars + ' | Created: ' + new Date(p.created).toLocaleDateString() + '</p>';
+                html += '<button class="btn" onclick="openProject(\'' + p.id + '\')">Open</button>';
+                html += '<button class="btn btn-danger" onclick="deleteProject(\'' + p.id + '\')">Delete</button>';
+                html += '</div>';
+            }
+            container.innerHTML = html;
+        }
+        
+        function clearForm() {
+            var inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].id === 'cars') {
+                    inputs[i].value = '1';
+                } else if (inputs[i].tagName === 'SELECT') {
+                    inputs[i].selectedIndex = 0;
+                } else {
+                    inputs[i].value = '';
+                }
+            }
+        }
+        
+        // Save functions
+        function save() {
+            if (!currentProject) return;
+            
+            try {
+                // Save current car data first
+                saveCarData();
+                
+                // Save general project data
+                var data = {};
+                var generalFields = ['stateNumber', 'building', 'address', 'cars', 'type',
+                                   'stops', 'frontOpenings', 'rearOpenings', 'fpm', 
+                                   'capacity', 'pistonType'];
+                
+                for (var i = 0; i < generalFields.length; i++) {
+                    var element = document.getElementById(generalFields[i]);
+                    if (element && element.value) {
+                        data[generalFields[i]] = element.value;
+                    }
+                }
+                
+                currentProject.data = data;
+                currentProject.carData = carData;
+                currentProject.photos = photos;
+                currentProject.modified = new Date().toISOString();
+                
+                projects[currentProject.id] = currentProject;
+                saveProjects();
+                
+                console.log('Project saved:', currentProject.name);
+            } catch(e) {
+                console.error('Error saving:', e);
+            }
+        }
+        
+        function saveProjects() {
+            try {
+                localStorage.setItem('projects', JSON.stringify(projects));
+            } catch(e) {
+                console.error('Error saving to localStorage:', e);
+                alert('Error saving project. Storage may be full.');
+            }
+        }
+        
+        // Car management
+        function updateCarTabs() {
+            var container = document.getElementById('carTabs');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            var numCars = parseInt(document.getElementById('cars').value) || 1;
+            
+            for (var i = 1; i <= numCars; i++) {
+                var tab = document.createElement('button');
+                tab.className = 'car-tab';
+                if (i === currentCar) tab.className += ' active';
+                tab.textContent = 'Car ' + i;
+                tab.onclick = (function(num) {
+                    return function() { switchToCar(num); };
+                })(i);
+                container.appendChild(tab);
+            }
+            
+            updateCarNumbers();
+        }
+        
+        function updateCarNumbers() {
+            var elements = ['carNumMR', 'carNumCar', 'carNumHW', 'carNumPit', 'carNumElev'];
+            for (var i = 0; i < elements.length; i++) {
+                var el = document.getElementById(elements[i]);
+                if (el) el.textContent = currentCar;
+            }
+        }
+        
+        function switchToCar(carNum) {
+            saveCarData();
+            currentCar = carNum;
+            loadCarData();
+            updateCarTabs();
+        }
+        
+        function addCar() {
+            var numCars = parseInt(document.getElementById('cars').value) || 1;
+            numCars++;
+            document.getElementById('cars').value = numCars;
+            currentCar = numCars;
+            
+            if (!carData['car' + numCars]) {
+                carData['car' + numCars] = {};
+            }
+            
+            updateCarTabs();
+            clearCarFields();
+            save();
+            alert('Car ' + numCars + ' added');
+        }
+        
+        function cloneCar() {
+            var sourceCarData = carData['car' + currentCar] || {};
+            var numCars = parseInt(document.getElementById('cars').value) || 1;
+            numCars++;
+            document.getElementById('cars').value = numCars;
+            
+            carData['car' + numCars] = JSON.parse(JSON.stringify(sourceCarData));
+            
+            currentCar = numCars;
+            updateCarTabs();
+            loadCarData();
+            save();
+            alert('Car ' + numCars + ' created as clone of Car ' + (numCars - 1));
+        }
+        
+        function deleteCar() {
+            var numCars = parseInt(document.getElementById('cars').value) || 1;
+            if (numCars <= 1) {
+                alert('Cannot delete the last car');
+                return;
+            }
+            
+            if (!confirm('Delete Car ' + currentCar + '?')) return;
+            
+            delete carData['car' + currentCar];
+            
+            var newCarData = {};
+            var newNum = 1;
+            for (var i = 1; i <= numCars; i++) {
+                if (i !== currentCar && carData['car' + i]) {
+                    newCarData['car' + newNum] = carData['car' + i];
+                    newNum++;
+                }
+            }
+            carData = newCarData;
+            
+            document.getElementById('cars').value = numCars - 1;
+            currentCar = 1;
+            
+            updateCarTabs();
+            loadCarData();
+            save();
+        }
+        
+        function saveCarData() {
+            if (!currentProject) return;
+            
+            var data = {};
+            var fields = getCarFields();
+            
+            for (var i = 0; i < fields.length; i++) {
+                var element = document.getElementById(fields[i]);
+                if (element) {
+                    data[fields[i]] = element.value;
+                }
+            }
+            
+            data.photos = photos['car' + currentCar] || {};
+            data.floors = floors;
+            
+            carData['car' + currentCar] = data;
+        }
+        
+        function loadCarData() {
+            var data = carData['car' + currentCar] || {};
+            var fields = getCarFields();
+            
+            clearCarFields();
+            
+            for (var i = 0; i < fields.length; i++) {
+                var element = document.getElementById(fields[i]);
+                if (element && data[fields[i]]) {
+                    element.value = data[fields[i]];
+                }
+            }
+            
+            if (data.photos) {
+                photos['car' + currentCar] = data.photos;
+                updateAllPhotos();
+            }
+            
+            if (data.floors) {
+                floors = data.floors;
+                renderFloors();
+            }
+        }
+        
+        function clearCarFields() {
+            var fields = getCarFields();
+            for (var i = 0; i < fields.length; i++) {
+                var element = document.getElementById(fields[i]);
+                if (element) {
+                    if (element.tagName === 'SELECT') {
+                        element.selectedIndex = 0;
+                    } else {
+                        element.value = '';
+                    }
+                }
+            }
+            photos['car' + currentCar] = {};
+            floors = [];
+            renderFloors();
+            updateAllPhotos();
+        }
+        
+        function getCarFields() {
+            return [
+                'motorBrand', 'motorVoltage', 'motorHP', 'motorRPM',
+                'controllerType', 'controllerBrand',
+                'carWeight', 'doorType',
+                'openingWidth', 'openingHeight',
+                'bufferCar', 'pistonSize'
+            ];
+        }
+        
+        // Photo handling
+        function addPhoto(section) {
+            document.getElementById('photo-' + section).click();
+        }
+        
+        function handlePhoto(section, input) {
+            var file = input.files[0];
+            if (!file) return;
+            
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                if (!photos['car' + currentCar]) {
+                    photos['car' + currentCar] = {};
+                }
+                if (!photos['car' + currentCar][section]) {
+                    photos['car' + currentCar][section] = [];
+                }
+                
+                photos['car' + currentCar][section].push({
+                    id: Date.now(),
+                    data: e.target.result
+                });
+                
+                updatePhotoList(section);
+                save();
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function updatePhotoList(section) {
+            var container = document.getElementById('photos-' + section);
+            if (!container) return;
+            
+            var carPhotos = photos['car' + currentCar];
+            if (!carPhotos || !carPhotos[section]) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            var html = '';
+            for (var i = 0; i < carPhotos[section].length; i++) {
+                html += '<div class="photo-item">';
+                html += '<img src="' + carPhotos[section][i].data + '" class="photo-thumb">';
+                html += '<button class="delete-photo" onclick="deletePhoto(\'' + section + '\',' + i + ')">×</button>';
+                html += '</div>';
+            }
+            container.innerHTML = html;
+        }
+        
+        function deletePhoto(section, index) {
+            if (photos['car' + currentCar] && photos['car' + currentCar][section]) {
+                photos['car' + currentCar][section].splice(index, 1);
+                updatePhotoList(section);
+                save();
+            }
+        }
+        
+        function updateAllPhotos() {
+            var sections = ['project', 'machine', 'car', 'hoistway', 'pit'];
+            for (var i = 0; i < sections.length; i++) {
+                updatePhotoList(sections[i]);
+            }
+        }
+        
+        // Elevations
+        function addFloor() {
+            floors.push({
+                id: Date.now(),
+                label: '',
+                height: '',
+                front: false,
+                rear: false
+            });
+            renderFloors();
+        }
+        
+        function renderFloors() {
+            var container = document.getElementById('floorsContainer');
+            if (!container) return;
+            
+            var html = '';
+            for (var i = 0; i < floors.length; i++) {
+                html += '<div style="background:#f9f9f9; padding:10px; margin:10px 0; border-radius:5px;">';
+                html += '<h4>Floor ' + (i + 1) + '</h4>';
+                html += '<input type="text" placeholder="Floor Label" value="' + (floors[i].label || '') + '" onchange="updateFloor(' + i + ', \'label\', this.value)" style="width:100%; margin:5px 0;">';
+                html += '<input type="text" placeholder="Floor Height" value="' + (floors[i].height || '') + '" onchange="updateFloor(' + i + ', \'height\', this.value)" style="width:100%; margin:5px 0;">';
+                html += '<label><input type="checkbox" ' + (floors[i].front ? 'checked' : '') + ' onchange="updateFloor(' + i + ', \'front\', this.checked)"> Front Opening</label><br>';
+                html += '<label><input type="checkbox" ' + (floors[i].rear ? 'checked' : '') + ' onchange="updateFloor(' + i + ', \'rear\', this.checked)"> Rear Opening</label><br>';
+                html += '<button class="btn btn-danger" onclick="deleteFloor(' + i + ')">Delete</button>';
+                html += '</div>';
+            }
+            container.innerHTML = html;
+        }
+        
+        function updateFloor(index, field, value) {
+            floors[index][field] = value;
+            save();
+        }
+        
+        function deleteFloor(index) {
+            floors.splice(index, 1);
+            renderFloors();
+            save();
+        }
+        
+        // Export functions - FIXED
+        function testExport() {
+            console.log('Current Project:', currentProject);
+            console.log('Car Data:', carData);
+            console.log('Photos:', photos);
+            alert('Check console for data');
+        }
+        
+        function exportJSON() {
+            if (!currentProject) {
+                alert('No project loaded. Please open a project first.');
+                return;
+            }
+            
+            save(); // Save current data first
+            
+            try {
+                var exportData = {
+                    projectName: currentProject.name,
+                    created: currentProject.created,
+                    modified: currentProject.modified || new Date().toISOString(),
+                    generalData: currentProject.data || {},
+                    carData: carData,
+                    photos: photos
+                };
+                
+                var dataStr = JSON.stringify(exportData, null, 2);
+                var blob = new Blob([dataStr], {type: 'application/json'});
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = (currentProject.name || 'survey') + '_' + Date.now() + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('JSON exported successfully');
+            } catch(e) {
+                console.error('Export error:', e);
+                alert('Error exporting JSON: ' + e.message);
+            }
+        }
+        
+        function exportHTML() {
+            if (!currentProject) {
+                alert('No project loaded. Please open a project first.');
+                return;
+            }
+            
+            save(); // Save current data first
+            
+            try {
+                var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + currentProject.name + '</title>';
+                html += '<style>body{font-family:Arial;margin:20px;line-height:1.6;}';
+                html += 'h1{color:#667eea;border-bottom:2px solid #667eea;padding-bottom:10px;}';
+                html += 'h2{color:#764ba2;margin-top:30px;}';
+                html += 'h3{color:#333;margin-top:20px;}';
+                html += '.section{background:#f9f9f9;padding:15px;margin:15px 0;border-radius:8px;}';
+                html += '.field{margin:8px 0;}.label{font-weight:bold;color:#555;}';
+                html += 'img{max-width:300px;margin:10px;border:2px solid #ddd;border-radius:4px;}';
+                html += '.car-section{border:2px solid #667eea;padding:20px;margin:20px 0;border-radius:10px;}';
+                html += '</style></head><body>';
+                
+                html += '<h1>Elevator Modernization Survey</h1>';
+                html += '<div class="section">';
+                html += '<h2>Project: ' + currentProject.name + '</h2>';
+                html += '<p>Generated: ' + new Date().toLocaleString() + '</p>';
+                html += '</div>';
+                
+                // General Information
+                if (currentProject.data) {
+                    html += '<div class="section"><h3>General Information</h3>';
+                    for (var key in currentProject.data) {
+                        if (currentProject.data[key]) {
+                            html += '<div class="field"><span class="label">' + key + ':</span> ' + currentProject.data[key] + '</div>';
+                        }
+                    }
+                    html += '</div>';
+                }
+                
+                // Car Data
+                var numCars = parseInt(currentProject.data.cars) || 1;
+                for (var c = 1; c <= numCars; c++) {
+                    html += '<div class="car-section">';
+                    html += '<h2>Car ' + c + '</h2>';
+                    
+                    var carInfo = carData['car' + c];
+                    if (carInfo) {
+                        // Car fields
+                        for (var field in carInfo) {
+                            if (field !== 'photos' && field !== 'floors' && carInfo[field]) {
+                                html += '<div class="field"><span class="label">' + field + ':</span> ' + carInfo[field] + '</div>';
+                            }
+                        }
+                        
+                        // Floors
+                        if (carInfo.floors && carInfo.floors.length > 0) {
+                            html += '<h3>Elevations</h3>';
+                            for (var f = 0; f < carInfo.floors.length; f++) {
+                                var floor = carInfo.floors[f];
+                                html += '<div class="field">Floor ' + (f + 1) + ': ';
+                                html += floor.label + ' (Height: ' + floor.height + ')';
+                                if (floor.front) html += ' [Front]';
+                                if (floor.rear) html += ' [Rear]';
+                                html += '</div>';
+                            }
+                        }
+                        
+                        // Photos
+                        if (carInfo.photos) {
+                            for (var section in carInfo.photos) {
+                                if (carInfo.photos[section] && carInfo.photos[section].length > 0) {
+                                    html += '<h3>' + section + ' Photos</h3>';
+                                    for (var p = 0; p < carInfo.photos[section].length; p++) {
+                                        html += '<img src="' + carInfo.photos[section][p].data + '">';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    html += '</div>';
+                }
+                
+                html += '</body></html>';
+                
+                var blob = new Blob([html], {type: 'text/html'});
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = (currentProject.name || 'survey') + '_report_' + Date.now() + '.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('HTML report exported successfully');
+            } catch(e) {
+                console.error('Export error:', e);
+                alert('Error exporting HTML: ' + e.message);
+            }
+        }
+        
+        function exportCSV() {
+            if (!currentProject) {
+                alert('No project loaded. Please open a project first.');
+                return;
+            }
+            
+            save(); // Save current data first
+            
+            try {
+                var csv = 'ELEVATOR MODERNIZATION SURVEY\n\n';
+                csv += 'Project Name,' + currentProject.name + '\n';
+                csv += 'Export Date,' + new Date().toLocaleString() + '\n\n';
+                
+                csv += 'GENERAL INFORMATION\n';
+                csv += 'Field,Value\n';
+                
+                if (currentProject.data) {
+                    for (var key in currentProject.data) {
+                        if (currentProject.data[key]) {
+                            csv += '"' + key + '","' + currentProject.data[key] + '"\n';
+                        }
+                    }
+                }
+                
+                // Car data
+                var numCars = parseInt(currentProject.data.cars) || 1;
+                for (var c = 1; c <= numCars; c++) {
+                    csv += '\n\nCAR ' + c + ' DATA\n';
+                    csv += 'Field,Value\n';
+                    
+                    var carInfo = carData['car' + c];
+                    if (carInfo) {
+                        for (var field in carInfo) {
+                            if (field !== 'photos' && field !== 'floors' && carInfo[field]) {
+                                csv += '"' + field + '","' + carInfo[field] + '"\n';
+                            }
+                        }
+                        
+                        // Add floor data
+                        if (carInfo.floors && carInfo.floors.length > 0) {
+                            csv += '\nFLOOR DATA\n';
+                            csv += 'Floor,Label,Height,Front,Rear\n';
+                            for (var f = 0; f < carInfo.floors.length; f++) {
+                                var floor = carInfo.floors[f];
+                                csv += (f + 1) + ',"' + floor.label + '","' + floor.height + '",';
+                                csv += (floor.front ? 'Yes' : 'No') + ',';
+                                csv += (floor.rear ? 'Yes' : 'No') + '\n';
+                            }
+                        }
+                    }
+                }
+                
+                var blob = new Blob([csv], {type: 'text/csv'});
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = (currentProject.name || 'survey') + '_' + Date.now() + '.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('CSV exported successfully');
+            } catch(e) {
+                console.error('Export error:', e);
+                alert('Error exporting CSV: ' + e.message);
+            }
+        }
+        
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
