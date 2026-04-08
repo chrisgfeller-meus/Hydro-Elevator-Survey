@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Elevator Survey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .app-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h3 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+        
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .modal-btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        /* SIDE MENU STYLES */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 250px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 200;
+            overflow-y: auto;
+        }
+        
+        .side-menu.active {
+            left: 0;
+        }
+        
+        .close-menu {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .side-menu ul {
+            list-style: none;
+            padding-top: 4rem;
+        }
+        
+        .side-menu li {
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .side-menu a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        
+        .side-menu a:hover {
+            background: #f0f0f0;
+        }
+        
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 1rem;
+            max-width: 100%;
+        }
+        
+        .survey-section {
+            display: none;
+        }
+        
+        .survey-section.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .survey-section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* DASHBOARD STYLES */
+        .dashboard-header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-header h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            border: none;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        
+        .action-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-width: 200px;
+        }
+        
+        .action-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .project-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-info {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .project-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .project-btn:hover {
+            background: #f0f0f0;
+        }
+        
+        .project-btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+        }
+        
+        .project-btn-danger {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* FORM STYLES */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* BUTTONS */
+        .btn-primary,
+        .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem 0;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        /* OVERLAY */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 199;
+        }
+        
+        .menu-overlay.active {
+            display: block;
+        }
+        
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 id="headerTitle">Elevator Survey</h1>
+            <button class="menu-btn" onclick="openMenu()">☰</button>
+        </header>
+
+        <!-- Menu Overlay -->
+        <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+        <!-- Side Menu -->
+        <nav id="sideMenu" class="side-menu">
+            <button class="close-menu" onclick="closeMenu()">×</button>
+            <ul>
+                <li><a onclick="showSection('dashboard')">🏠 Dashboard</a></li>
+                <li class="survey-menu-item" style="display:none;"><a onclick="showSection('project')">📋 Project Info</a></li>
+                <li class="survey-menu-item" style="display:none;"><a onclick="showSection('machine-room')">⚙️ Machine Room</a></li>
+                <li class="survey-menu-item" style="display:none;"><a onclick="showSection('car')">🚪 Car Equipment</a></li>
+                <li class="survey-menu-item" style="display:none;"><a onclick="showSection('hoistway')">🏗️ Hoistway</a></li>
+                <li class="survey-menu-item" style="display:none;"><a onclick="showSection('pit')">🕳️ Pit Equipment</a></li>
+                <li class="survey-menu-item" style="display:none;"><a onclick="showSection('export')">💾 Export Data</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Dashboard -->
+            <section id="dashboard" class="survey-section active">
+                <div class="dashboard-header">
+                    <h2>🏢 Elevator Survey Projects</h2>
+                    <p>Manage your elevator surveys</p>
+                    <div class="dashboard-actions">
+                        <button class="action-btn action-btn-primary" onclick="showNewProjectModal()">
+                            ➕ Start New Project
+                        </button>
+                    </div>
+                </div>
+                <div id="projectsList"></div>
+            </section>
+
+            <!-- Project Info -->
+            <section id="project" class="survey-section">
+                <h2>Project Information</h2>
+                <div class="form-group">
+                    <label>Building Name</label>
+                    <input type="text" id="building" onchange="saveData()">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="address" onchange="saveData()"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Number of Cars</label>
+                    <input type="number" id="cars" value="1" onchange="saveData()">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="elevatorType" onchange="saveData()">
+                        <option>Hydraulic</option>
+                        <option>Traction</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Machine Room -->
+            <section id="machine-room" class="survey-section">
+                <h2>Machine Room</h2>
+                <div class="form-group">
+                    <label>Motor Brand</label>
+                    <input type="text" id="motorBrand" onchange="saveData()">
+                </div>
+                <div class="form-group">
+                    <label>HP</label>
+                    <input type="text" id="motorHP" onchange="saveData()">
+                </div>
+            </section>
+
+            <!-- Car Equipment -->
+            <section id="car" class="survey-section">
+                <h2>Car Equipment</h2>
+                <div class="form-group">
+                    <label>Car Weight</label>
+                    <input type="text" id="carWeight" onchange="saveData()">
+                </div>
+            </section>
+
+            <!-- Hoistway -->
+            <section id="hoistway" class="survey-section">
+                <h2>Hoistway</h2>
+                <div class="form-group">
+                    <label>Opening Width</label>
+                    <input type="text" id="openingWidth" onchange="saveData()">
+                </div>
+            </section>
+
+            <!-- Pit -->
+            <section id="pit" class="survey-section">
+                <h2>Pit Equipment</h2>
+                <div class="form-group">
+                    <label>Buffer Car</label>
+                    <input type="text" id="bufferCar" onchange="saveData()">
+                </div>
+            </section>
+
+            <!-- Export -->
+            <section id="export" class="survey-section">
+                <h2>Export Data</h2>
+                <button class="btn-primary" onclick="exportJSON()">Export JSON</button>
+                <button class="btn-secondary" onclick="returnToDashboard()">Back to Dashboard</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- New Project Modal -->
+    <div id="newProjectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Project</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="newProjectName" placeholder="Enter project name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn modal-btn-primary" onclick="createNewProject()">Create Project</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentProject = null;
+        let projects = {};
+        
+        // Initialize
+        window.onload = function() {
+            console.log('App starting...');
+            loadProjects();
+            renderProjectsList();
+        };
+        
+        // Menu functions
+        function openMenu() {
+            document.getElementById('sideMenu').classList.add('active');
+            document.getElementById('menuOverlay').classList.add('active');
+        }
+        
+        function closeMenu() {
+            document.getElementById('sideMenu').classList.remove('active');
+            document.getElementById('menuOverlay').classList.remove('active');
+        }
+        
+        function showSection(sectionName) {
+            console.log('Showing section:', sectionName);
+            
+            // Hide all sections
+            document.querySelectorAll('.survey-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Update menu items
+            const surveyItems = document.querySelectorAll('.survey-menu-item');
+            if (sectionName === 'dashboard') {
+                surveyItems.forEach(item => item.style.display = 'none');
+            } else {
+                surveyItems.forEach(item => item.style.display = 'block');
+            }
+            
+            closeMenu();
+        }
+        
+        // Modal functions
+        function showNewProjectModal() {
+            console.log('Opening new project modal');
+            document.getElementById('newProjectModal').classList.add('active');
+            document.getElementById('newProjectName').value = '';
+            document.getElementById('newProjectName').focus();
+        }
+        
+        function closeModal() {
+            document.getElementById('newProjectModal').classList.remove('active');
+        }
+        
+        function createNewProject() {
+            const projectName = document.getElementById('newProjectName').value.trim();
+            
+            if (!projectName) {
+                alert('Please enter a project name');
+                return;
+            }
+            
+            console.log('Creating project:', projectName);
+            
+            // Create project
+            const projectId = 'proj_' + Date.now();
+            currentProject = {
+                id: projectId,
+                name: projectName,
+                created: new Date().toISOString(),
+                data: {}
+            };
+            
+            // Save project
+            projects[projectId] = currentProject;
+            saveProjects();
+            
+            // Clear forms
+            document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+                if (input.id !== 'newProjectName') {
+                    input.value = '';
+                }
+            });
+            document.getElementById('cars').value = '1';
+            
+            // Set building name to project name
+            document.getElementById('building').value = projectName;
+            
+            // Close modal and navigate
+            closeModal();
+            showSection('project');
+            showToast('Project created: ' + projectName);
+            
+            console.log('Project created successfully');
+        }
+        
+        function continueProject(projectId) {
+            console.log('Loading project:', projectId);
+            
+            const project = projects[projectId];
+            if (!project) return;
+            
+            currentProject = project;
+            
+            // Load data
+            if (project.data) {
+                Object.keys(project.data).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = project.data[key];
+                    }
+                });
+            }
+            
+            showSection('project');
+            showToast('Loaded: ' + project.name);
+        }
+        
+        function deleteProject(projectId) {
+            if (confirm('Delete this project?')) {
+                delete projects[projectId];
+                saveProjects();
+                renderProjectsList();
+                showToast('Project deleted');
+            }
+        }
+        
+        function returnToDashboard() {
+            saveData();
+            currentProject = null;
+            showSection('dashboard');
+            renderProjectsList();
+        }
+        
+        function saveData() {
+            if (!currentProject) return;
+            
+            // Collect form data
+            const data = {};
+            document.querySelectorAll('input, select, textarea').forEach(input => {
+                if (input.id && input.value) {
+                    data[input.id] = input.value;
+                }
+            });
+            
+            // Update project
+            currentProject.data = data;
+            projects[currentProject.id] = currentProject;
+            saveProjects();
+            
+            console.log('Data saved');
+        }
+        
+        function saveProjects() {
+            localStorage.setItem('elevatorProjects', JSON.stringify(projects));
+        }
+        
+        function loadProjects() {
+            const saved = localStorage.getItem('elevatorProjects');
+            if (saved) {
+                projects = JSON.parse(saved);
+            }
+            console.log('Loaded projects:', Object.keys(projects).length);
+        }
+        
+        function renderProjectsList() {
+            const container = document.getElementById('projectsList');
+            const projectIds = Object.keys(projects);
+            
+            if (projectIds.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No Projects Yet</h3><p>Click "Start New Project" to begin</p></div>';
+                return;
+            }
+            
+            let html = '<div class="projects-grid">';
+            projectIds.forEach(id => {
+                const project = projects[id];
+                html += `
+                    <div class="project-card">
+                        <h3>${project.name}</h3>
+                        <div class="project-info">
+                            Created: ${new Date(project.created).toLocaleDateString()}
+                        </div>
+                        <div class="project-actions">
+                            <button class="project-btn project-btn-primary" onclick="continueProject('${id}')">Open</button>
+                            <button class="project-btn project-btn-danger" onclick="deleteProject('${id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        function exportJSON() {
+            if (!currentProject) {
+                alert('No project loaded');
+                return;
+            }
+            
+            saveData();
+            
+            const blob = new Blob([JSON.stringify(currentProject.data, null, 2)], {type: 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = currentProject.name + '.json';
+            a.click();
+        }
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
