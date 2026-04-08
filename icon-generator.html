@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator for Elevator Survey App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px;
+            display: block;
+            background: white;
+        }
+        .download-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px;
+        }
+        .download-btn:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Elevator Survey App Icon Generator</h1>
+    <p>Click the download links below to save the icons:</p>
+    
+    <h2>192x192 Icon</h2>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <a id="download192" class="download-btn" download="icon-192.png">Download icon-192.png</a>
+    
+    <h2>512x512 Icon</h2>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    <a id="download512" class="download-btn" download="icon-512.png">Download icon-512.png</a>
+    
+    <script>
+        function createIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Fill background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add rounded corners effect
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.15);
+            ctx.fill();
+            ctx.globalCompositeOperation = 'source-over';
+            
+            // Add elevator icon (simplified)
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.02;
+            ctx.fillStyle = 'white';
+            
+            // Draw elevator shaft
+            const shaftWidth = size * 0.4;
+            const shaftHeight = size * 0.6;
+            const shaftX = (size - shaftWidth) / 2;
+            const shaftY = (size - shaftHeight) / 2;
+            
+            ctx.strokeRect(shaftX, shaftY, shaftWidth, shaftHeight);
+            
+            // Draw elevator car
+            const carWidth = shaftWidth * 0.8;
+            const carHeight = shaftHeight * 0.3;
+            const carX = shaftX + (shaftWidth - carWidth) / 2;
+            const carY = shaftY + shaftHeight * 0.2;
+            
+            ctx.fillRect(carX, carY, carWidth, carHeight);
+            
+            // Add text
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.08}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('SURVEY', size / 2, size * 0.9);
+            
+            // Create download link
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const downloadLink = document.getElementById(`download${size}`);
+                downloadLink.href = url;
+            });
+        }
+        
+        // Create both icons
+        createIcon(192);
+        createIcon(512);
+    </script>
+</body>
+</html>
