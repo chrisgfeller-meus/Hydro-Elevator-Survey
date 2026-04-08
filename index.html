@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Elevator Modernization Survey</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Elevator Mod Survey</h1>
+            <button id="menuBtn" class="menu-btn">☰</button>
+        </header>
+
+        <nav id="sideMenu" class="side-menu">
+            <button class="close-menu" id="closeMenu">×</button>
+            <ul>
+                <li><a href="#" data-section="project">Project Info</a></li>
+                <li><a href="#" data-section="machine-room">Machine Room</a></li>
+                <li><a href="#" data-section="car">Car Equipment</a></li>
+                <li><a href="#" data-section="hoistway">Hoistway</a></li>
+                <li><a href="#" data-section="pit">Pit Equipment</a></li>
+                <li><a href="#" data-section="elevations">Elevations</a></li>
+                <li><a href="#" data-section="export">Export Data</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <!-- Project Info Section -->
+            <section id="project" class="survey-section active">
+                <h2>Project Information</h2>
+                <div class="form-group">
+                    <label>State Number</label>
+                    <input type="text" id="stateNumber" placeholder="Enter state number">
+                </div>
+                <div class="form-group">
+                    <label>Building Name</label>
+                    <input type="text" id="building" placeholder="Enter building name">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="address" placeholder="Enter full address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Number of Cars</label>
+                    <input type="number" id="cars" min="1" max="10" value="1">
+                </div>
+                <div class="form-group">
+                    <label>Elevator Type</label>
+                    <select id="elevatorType">
+                        <option>Hydraulic</option>
+                        <option>Traction</option>
+                        <option>Machine Room-Less</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Number of Stops</label>
+                    <input type="number" id="stops" min="2" max="40">
+                </div>
+                <div class="form-group">
+                    <label>Front Openings</label>
+                    <input type="number" id="frontOpenings" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Rear Openings</label>
+                    <input type="number" id="rearOpenings" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Speed (FPM)</label>
+                    <input type="number" id="fpm" placeholder="Feet per minute">
+                </div>
+                <div class="form-group">
+                    <label>Capacity (lbs)</label>
+                    <input type="number" id="capacity" placeholder="Weight capacity">
+                </div>
+                <div class="form-group">
+                    <label>Piston Type</label>
+                    <input type="text" id="pistonType" placeholder="Piston type (if hydraulic)">
+                </div>
+            </section>
+
+            <!-- Machine Room Section -->
+            <section id="machine-room" class="survey-section">
+                <h2>Machine Room Equipment</h2>
+                
+                <h3>Pump Motor Data</h3>
+                <div class="form-group">
+                    <label>Motor Brand</label>
+                    <input type="text" id="motorBrand">
+                </div>
+                <div class="form-group">
+                    <label>Voltage</label>
+                    <input type="text" id="motorVoltage">
+                </div>
+                <div class="form-group">
+                    <label>Current FL</label>
+                    <input type="text" id="currentFL">
+                </div>
+                <div class="form-group">
+                    <label>Current NL</label>
+                    <input type="text" id="currentNL">
+                </div>
+                <div class="form-group">
+                    <label>HP</label>
+                    <input type="text" id="motorHP">
+                </div>
+                <div class="form-group">
+                    <label>RPM</label>
+                    <input type="text" id="motorRPM">
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="motorType">
+                        <option>Submersible</option>
+                        <option>Dry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Serial #</label>
+                    <input type="text" id="motorSerial">
+                </div>
+                <div class="form-group">
+                    <label>Sales #</label>
+                    <input type="text" id="motorSales">
+                </div>
+
+                <h3>Pump</h3>
+                <div class="form-group">
+                    <label>Pump Brand</label>
+                    <input type="text" id="pumpBrand">
+                </div>
+                <div class="form-group">
+                    <label>GPM</label>
+                    <input type="text" id="pumpGPM">
+                </div>
+                <div class="form-group">
+                    <label>HP</label>
+                    <input type="text" id="pumpHP">
+                </div>
+                <div class="form-group">
+                    <label>RPM</label>
+                    <input type="text" id="pumpRPM">
+                </div>
+                <div class="form-group">
+                    <label>Serial #</label>
+                    <input type="text" id="pumpSerial">
+                </div>
+
+                <h3>Valve</h3>
+                <div class="form-group">
+                    <label>Valve Type</label>
+                    <input type="text" id="valveType">
+                </div>
+                <div class="form-group">
+                    <label>Valve Brand</label>
+                    <input type="text" id="valveBrand">
+                </div>
+                <div class="form-group">
+                    <label>Input Pipe Side</label>
+                    <input type="text" id="inputPipe">
+                </div>
+                <div class="form-group">
+                    <label>Output Pipe Side</label>
+                    <input type="text" id="outputPipe">
+                </div>
+                <div class="form-group">
+                    <label>Coil Voltage</label>
+                    <input type="text" id="coilVoltage">
+                </div>
+                <div class="form-group">
+                    <label>Working Pressure</label>
+                    <input type="text" id="workingPressure">
+                </div>
+                <div class="form-group">
+                    <label>Relief</label>
+                    <input type="text" id="relief">
+                </div>
+
+                <h3>Controller</h3>
+                <div class="form-group">
+                    <label>Controller Type</label>
+                    <input type="text" id="controllerType">
+                </div>
+                <div class="form-group">
+                    <label>Controller Brand</label>
+                    <input type="text" id="controllerBrand">
+                </div>
+                <div class="form-group">
+                    <label>Volts</label>
+                    <input type="text" id="controllerVolts">
+                </div>
+                <div class="form-group">
+                    <label>Sales Number</label>
+                    <input type="text" id="salesNumber">
+                </div>
+                <div class="form-group">
+                    <label>Tank Size</label>
+                    <input type="text" id="tankSize">
+                </div>
+
+                <h3>Disconnect</h3>
+                <div class="form-group">
+                    <label>Rated</label>
+                    <input type="text" id="disconnectRated">
+                </div>
+                <div class="form-group">
+                    <label>Volts</label>
+                    <input type="text" id="disconnectVolts">
+                </div>
+                <div class="form-group">
+                    <label>Amps</label>
+                    <input type="text" id="disconnectAmps">
+                </div>
+                <div class="form-group">
+                    <label>Fusable</label>
+                    <select id="fusable">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Lockable</label>
+                    <select id="lockable">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Shunt Trip</label>
+                    <select id="shuntTrip">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Battery Lowering</label>
+                    <select id="batteryLowering">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Machine Room Notes</label>
+                    <textarea id="mrNotes" rows="3"></textarea>
+                </div>
+            </section>
+
+            <!-- Car Equipment Section -->
+            <section id="car" class="survey-section">
+                <h2>Car Equipment</h2>
+                
+                <h3>Data Tag</h3>
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="text" id="dataTagCapacity">
+                </div>
+                <div class="form-group">
+                    <label>Ropes</label>
+                    <input type="text" id="ropes">
+                </div>
+                <div class="form-group">
+                    <label>Rope Condition</label>
+                    <select id="ropeCondition">
+                        <option>Excellent</option>
+                        <option>Good</option>
+                        <option>Fair</option>
+                        <option>Poor</option>
+                        <option>Replace</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Car Weight</label>
+                    <input type="text" id="carWeight">
+                </div>
+                <div class="form-group">
+                    <label>Speed</label>
+                    <input type="text" id="carSpeed">
+                </div>
+
+                <h3>Door Operator</h3>
+                <div class="form-group">
+                    <label>Door Operator Brand</label>
+                    <input type="text" id="doorBrand">
+                </div>
+                <div class="form-group">
+                    <label>Door Type</label>
+                    <input type="text" id="doorType">
+                </div>
+                <div class="form-group">
+                    <label>Opening Type</label>
+                    <select id="openingType">
+                        <option>Single Speed (S.S.)</option>
+                        <option>Center Opening (C/O)</option>
+                        <option>Two Speed (2S)</option>
+                        <option>Bi-Parting</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Voltage</label>
+                    <input type="text" id="doorVoltage">
+                </div>
+
+                <h3>Car Sling</h3>
+                <div class="form-group">
+                    <label>Cab Shell</label>
+                    <input type="text" id="cabShell">
+                </div>
+                <div class="form-group">
+                    <label>Cab Interiors</label>
+                    <textarea id="cabInteriors" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Roller Guides</label>
+                    <input type="text" id="rollerGuides">
+                </div>
+                <div class="form-group">
+                    <label>Bolster Type</label>
+                    <input type="text" id="bolsterType">
+                </div>
+                <div class="form-group">
+                    <label>Cartop Station</label>
+                    <input type="text" id="cartopStation">
+                </div>
+                <div class="form-group">
+                    <label>Cab Steadiers</label>
+                    <input type="text" id="cabSteadiers">
+                </div>
+
+                <h3>Fixtures</h3>
+                <div class="form-group">
+                    <label>COP Type (Applied/Swing)</label>
+                    <select id="copType">
+                        <option>Applied</option>
+                        <option>Swing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Main/Aux (ADA)</label>
+                    <select id="mainAux">
+                        <option>Main</option>
+                        <option>Auxiliary</option>
+                        <option>Both</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Transom PI</label>
+                    <input type="text" id="transomPI">
+                </div>
+                <div class="form-group">
+                    <label>Phone Box</label>
+                    <input type="text" id="phoneBox">
+                </div>
+                <div class="form-group">
+                    <label>Door Protection</label>
+                    <input type="text" id="doorProtection">
+                </div>
+                <div class="form-group">
+                    <label>Car Lantern Quantity</label>
+                    <input type="number" id="carLanternQty">
+                </div>
+                <div class="form-group">
+                    <label>Car Equipment Notes</label>
+                    <textarea id="carNotes" rows="3"></textarea>
+                </div>
+            </section>
+
+            <!-- Hoistway Section -->
+            <section id="hoistway" class="survey-section">
+                <h2>Hoistway Equipment</h2>
+                
+                <h3>Hall Door Equipment</h3>
+                <div class="form-group">
+                    <label>Opening Size - Width</label>
+                    <input type="text" id="openingWidth">
+                </div>
+                <div class="form-group">
+                    <label>Opening Size - Height</label>
+                    <input type="text" id="openingHeight">
+                </div>
+                <div class="form-group">
+                    <label>Door Panels</label>
+                    <input type="text" id="doorPanels">
+                </div>
+                <div class="form-group">
+                    <label>Integral</label>
+                    <select id="integral">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sills (Condition/Finish)</label>
+                    <input type="text" id="sills">
+                </div>
+                <div class="form-group">
+                    <label>Extend Full Length</label>
+                    <select id="extendFullLength">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Door Tracks</label>
+                    <input type="text" id="doorTracks">
+                </div>
+                <div class="form-group">
+                    <label>One Piece</label>
+                    <select id="onePiece">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Door Hangers</label>
+                    <input type="text" id="doorHangers">
+                </div>
+                <div class="form-group">
+                    <label>Door Rollers</label>
+                    <input type="text" id="doorRollers">
+                </div>
+                <div class="form-group">
+                    <label>Closures</label>
+                    <input type="text" id="closures">
+                </div>
+                <div class="form-group">
+                    <label>Gibs (Type)</label>
+                    <input type="text" id="gibs">
+                </div>
+
+                <h3>Wiring</h3>
+                <div class="form-group">
+                    <label>Pipe/Gutter</label>
+                    <input type="text" id="pipeGutter">
+                </div>
+                <div class="form-group">
+                    <label>Each Car Gutter Run</label>
+                    <input type="text" id="carGutterRun">
+                </div>
+                <div class="form-group">
+                    <label>Traveler Connection</label>
+                    <input type="text" id="travelerConnection">
+                </div>
+                <div class="form-group">
+                    <label>Hoistway Construction</label>
+                    <input type="text" id="hwConstruction">
+                </div>
+
+                <h3>Hoistway Equipment</h3>
+                <div class="form-group">
+                    <label>Rail Size Main</label>
+                    <input type="text" id="railSize">
+                </div>
+                <div class="form-group">
+                    <label>Bracket Spacing Main</label>
+                    <input type="text" id="bracketSpacing">
+                </div>
+                <div class="form-group">
+                    <label>Struts</label>
+                    <input type="text" id="struts">
+                </div>
+                <div class="form-group">
+                    <label>Fishplates</label>
+                    <input type="text" id="fishplates">
+                </div>
+                <div class="form-group">
+                    <label>Fire Sprinkler</label>
+                    <select id="fireSprinkler">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Smoke Sensor</label>
+                    <select id="smokeSensor">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <h3>Fixtures</h3>
+                <div class="form-group">
+                    <label>Wall Construction</label>
+                    <input type="text" id="wallConstruction">
+                </div>
+                <div class="form-group">
+                    <label># of Hall Push Buttons</label>
+                    <input type="number" id="hallButtons">
+                </div>
+                <div class="form-group">
+                    <label>Push Button Finish</label>
+                    <input type="text" id="pbFinish">
+                </div>
+                <div class="form-group">
+                    <label># of Risers</label>
+                    <input type="number" id="numRisers">
+                </div>
+                <div class="form-group">
+                    <label>Riser Finish</label>
+                    <input type="text" id="riserFinish">
+                </div>
+                <div class="form-group">
+                    <label>Existing Box Size</label>
+                    <input type="text" id="boxSize">
+                </div>
+                <div class="form-group">
+                    <label>ADA Compliant</label>
+                    <select id="hwADA">
+                        <option>Yes</option>
+                        <option>No</option>
+                        <option>Partial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label># of Inconspicuous Risers</label>
+                    <input type="number" id="inconspicuousRisers">
+                </div>
+                <div class="form-group">
+                    <label>Inconspicuous Riser Finish</label>
+                    <input type="text" id="inconspicuousFinish">
+                </div>
+                <div class="form-group">
+                    <label>Hall Lanterns</label>
+                    <input type="text" id="hallLanterns">
+                </div>
+                <div class="form-group">
+                    <label>Hall PI's</label>
+                    <input type="text" id="hallPIs">
+                </div>
+                <div class="form-group">
+                    <label>Access Keys</label>
+                    <input type="text" id="accessKeys">
+                </div>
+                <div class="form-group">
+                    <label>Lobby Panel</label>
+                    <input type="text" id="lobbyPanel">
+                </div>
+                <div class="form-group">
+                    <label>Fire Panel</label>
+                    <select id="firePanel">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Hoistway Notes</label>
+                    <textarea id="hwNotes" rows="3"></textarea>
+                </div>
+            </section>
+
+            <!-- Pit Section -->
+            <section id="pit" class="survey-section">
+                <h2>Pit Equipment</h2>
+                
+                <div class="form-group">
+                    <label>Buffer Car</label>
+                    <input type="text" id="bufferCar">
+                </div>
+                <div class="form-group">
+                    <label>Ladder</label>
+                    <select id="pitLadder">
+                        <option>Yes</option>
+                        <option>No</option>
+                        <option>Needs Repair</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Screen</label>
+                    <select id="pitScreen">
+                        <option>Yes</option>
+                        <option>No</option>
+                        <option>Needs Repair</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Light</label>
+                    <select id="pitLight">
+                        <option>Working</option>
+                        <option>Not Working</option>
+                        <option>Missing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stop Switch</label>
+                    <select id="stopSwitch">
+                        <option>Working</option>
+                        <option>Not Working</option>
+                        <option>Missing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sump Pump</label>
+                    <select id="sumpPump">
+                        <option>Yes</option>
+                        <option>No</option>
+                        <option>Needs Repair</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Piping</label>
+                    <input type="text" id="pitPiping">
+                </div>
+                <div class="form-group">
+                    <label>Piston/Head</label>
+                    <input type="text" id="pistonHead">
+                </div>
+                <div class="form-group">
+                    <label>Pit Valve</label>
+                    <input type="text" id="pitValve">
+                </div>
+                <div class="form-group">
+                    <label>Piston Size</label>
+                    <input type="text" id="pistonSize">
+                </div>
+                <div class="form-group">
+                    <label>Pit Notes</label>
+                    <textarea id="pitNotes" rows="3"></textarea>
+                </div>
+            </section>
+
+            <!-- Elevations Section -->
+            <section id="elevations" class="survey-section">
+                <h2>Elevations</h2>
+                <div class="elevations-container">
+                    <button id="addFloor" class="btn-primary">Add Floor</button>
+                    <div id="floorsContainer"></div>
+                </div>
+            </section>
+
+            <!-- Export Section -->
+            <section id="export" class="survey-section">
+                <h2>Export Survey Data</h2>
+                <div class="export-options">
+                    <button id="saveLocal" class="btn-primary">Save to Device</button>
+                    <button id="exportJSON" class="btn-secondary">Export as JSON</button>
+                    <button id="exportCSV" class="btn-secondary">Export as CSV</button>
+                    <button id="emailReport" class="btn-secondary">Email Report</button>
+                </div>
+                <div id="savedSurveys" class="saved-surveys">
+                    <h3>Saved Surveys</h3>
+                    <ul id="surveysList"></ul>
+                </div>
+            </section>
+        </main>
+
+        <div class="photo-capture">
+            <button id="photoBtn" class="photo-btn">📷</button>
+            <input type="file" id="photoInput" accept="image/*" capture="camera" style="display: none;">
+        </div>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+</html>
